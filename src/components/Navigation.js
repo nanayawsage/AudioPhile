@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ShoppingCart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,9 +17,10 @@ const Navigation = () => {
 
   const navLinks = [
     { href: '/', label: 'HOME' },
-    { href: '/headphones', label: 'HEADPHONES' },
-    { href: '/speakers', label: 'SPEAKERS' },
-    { href: '/earphones', label: 'EARPHONES' }
+    { href: '/Headphones', label: 'HEADPHONES' },
+    { href: '/Speakers', label: 'SPEAKERS' },
+    { href: '/Earphones', label: 'EARPHONES' }
+
   ];
 
   const toggleMobileMenu = () => {
@@ -247,14 +249,14 @@ const Navigation = () => {
 
             {/* Shopping cart */}
             <div style={styles.cartContainer}>
-              <button 
+              <Link to= "/Cart"
                 style={styles.cartButton}
                 aria-label="Shopping cart"
                 onMouseEnter={(e) => handleButtonHover(e, true)}
                 onMouseLeave={(e) => handleButtonHover(e, false)}
               >
                 <ShoppingCart size={isMobile ? 20 : isDesktop ? 24 : 22} />
-              </button>
+              </Link>
             </div>
           </div>
 

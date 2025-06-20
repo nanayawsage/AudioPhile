@@ -1,10 +1,15 @@
 import React from 'react'
+import Navigation from './Navigation'
+import Footer from './Footer'
 
 const Headphones = () => {
   return (
-    <div>
-      Headphones
-    </div>
+    <>
+        <Navigation />
+
+        <Footer />
+      
+    </>
   )
 }
 
