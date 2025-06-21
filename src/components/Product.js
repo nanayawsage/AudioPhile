@@ -230,7 +230,8 @@ const Product = ({ onAddToCart }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)'
+        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
+        overflow: 'hidden'
       },
       productImageContent: {
         textAlign: 'center',
@@ -257,7 +258,8 @@ const Product = ({ onAddToCart }) => {
         padding: '0.25rem 0.75rem',
         borderRadius: '1rem',
         fontSize: '0.75rem',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        zIndex: 1
       },
       newBadge: {
         left: '1rem',
@@ -484,17 +486,8 @@ const Product = ({ onAddToCart }) => {
       onAddToCart(product);
     }
 
-    // Store in localStorage as backup
-    const existingCart = JSON.parse(localStorage.getItem('audioCart') || '[]');
-    const existingItem = existingCart.find(item => item.id === product.id);
-    
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      existingCart.push({ ...product, quantity: 1 });
-    }
-    
-    localStorage.setItem('audioCart', JSON.stringify(existingCart));
+    // Store cart data in memory (no localStorage in Claude artifacts)
+    console.log('Product added to cart:', product);
   };
 
   return (
@@ -547,12 +540,15 @@ const Product = ({ onAddToCart }) => {
             >
               {/* Product Image */}
               <div style={styles.productImage}>
-                <div style={styles.productImageContent}>
-                  <div style={styles.productImageIcon}>
-                    <span>🎧</span>
-                  </div>
-                  <p style={styles.productImageText}>{product.name}</p>
-                </div>
+                <img 
+                  src={isMobile ? product.categoryImage.mobile : isTablet ? product.categoryImage.tablet : product.categoryImage.desktop}
+                  alt={product.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
                 
                 {/* New Badge */}
                 {product.new && (
@@ -658,7 +654,7 @@ const Product = ({ onAddToCart }) => {
             onMouseEnter={(e) => e.target.style.backgroundColor = '#ea580c'}
             onMouseLeave={(e) => e.target.style.backgroundColor = '#fb923c'}
           >
-            Explore More Product
+            Explore More Products
           </button>
         </div>
       </div>

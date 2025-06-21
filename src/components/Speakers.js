@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Star, ArrowRight, Volume2,} from 'lucide-react';
-import Footer from './Footer';
+import { ShoppingCart, Star, ArrowRight, Volume2 } from 'lucide-react';
 import Navigation from './Navigation';
+import Footer from './Footer';
 
 const Speakers = ({ onAddToCart }) => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const [addedProducts, setAddedProducts] = useState({});
+  const [imageErrors, setImageErrors] = useState({});
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,6 +70,24 @@ const Speakers = ({ onAddToCart }) => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
+  };
+
+  const getResponsiveImage = (product) => {
+    // Use category images for the grid view as they're designed for preview
+    if (isMobile) {
+      return product.categoryImage.mobile;
+    } else if (isTablet) {
+      return product.categoryImage.tablet;
+    } else {
+      return product.categoryImage.desktop;
+    }
+  };
+
+  const handleImageError = (productId) => {
+    setImageErrors(prev => ({
+      ...prev,
+      [productId]: true
+    }));
   };
 
   const getStyles = () => {
@@ -174,10 +193,21 @@ const Speakers = ({ onAddToCart }) => {
         position: 'relative',
         aspectRatio: '4/3',
         backgroundColor: '#f8fafc',
+        overflow: 'hidden'
+      },
+      productImg: {
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        transition: 'transform 0.3s ease'
+      },
+      productImageFallback: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)'
+        height: '100%',
+        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
+        color: '#94a3b8'
       },
       productImageContent: {
         textAlign: 'center',
@@ -206,7 +236,8 @@ const Speakers = ({ onAddToCart }) => {
         fontSize: '0.75rem',
         fontWeight: 'bold',
         textTransform: 'uppercase',
-        letterSpacing: '0.05em'
+        letterSpacing: '0.05em',
+        zIndex: 10
       },
       newBadge: {
         left: '1.5rem',
@@ -336,15 +367,23 @@ const Speakers = ({ onAddToCart }) => {
       e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
       e.currentTarget.style.transform = 'translateY(-4px)';
       const nameElement = e.currentTarget.querySelector('[data-product-name]');
+      const imgElement = e.currentTarget.querySelector('[data-product-img]');
       if (nameElement) {
         nameElement.style.color = '#fb923c';
+      }
+      if (imgElement) {
+        imgElement.style.transform = 'scale(1.05)';
       }
     } else {
       e.currentTarget.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)';
       e.currentTarget.style.transform = 'translateY(0)';
       const nameElement = e.currentTarget.querySelector('[data-product-name]');
+      const imgElement = e.currentTarget.querySelector('[data-product-img]');
       if (nameElement) {
         nameElement.style.color = '#0f172a';
+      }
+      if (imgElement) {
+        imgElement.style.transform = 'scale(1)';
       }
     }
   };
@@ -394,6 +433,7 @@ const Speakers = ({ onAddToCart }) => {
 
   return (
     <>
+    
       <Navigation />
     <div style={styles.container}>
       {/* Header */}
@@ -456,12 +496,24 @@ const Speakers = ({ onAddToCart }) => {
             >
               {/* Product Image */}
               <div style={styles.productImage}>
-                <div style={styles.productImageContent}>
-                  <div style={styles.productImageIcon}>
-                    <span>🔊</span>
+                {!imageErrors[product.id] ? (
+                  <img
+                    src={getResponsiveImage(product)}
+                    alt={product.name}
+                    style={styles.productImg}
+                    data-product-img
+                    onError={() => handleImageError(product.id)}
+                  />
+                ) : (
+                  <div style={styles.productImageFallback}>
+                    <div style={styles.productImageContent}>
+                      <div style={styles.productImageIcon}>
+                        <span>🔊</span>
+                      </div>
+                      <p style={styles.productImageText}>{product.name}</p>
+                    </div>
                   </div>
-                  <p style={styles.productImageText}>{product.name}</p>
-                </div>
+                )}
                 
                 {/* New Badge */}
                 {product.new && (
@@ -545,6 +597,7 @@ const Speakers = ({ onAddToCart }) => {
           ))}
         </div>
       </div>
+        
 
       {/* Footer */}
       <div style={styles.footer}>
@@ -561,8 +614,8 @@ const Speakers = ({ onAddToCart }) => {
         </div>
       </div>
     </div>
-    <Footer />
-    </>
+      <Footer />
+        </>
   );
 };
 

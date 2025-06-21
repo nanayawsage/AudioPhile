@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Star, ArrowRight } from 'lucide-react';
-import Footer from './Footer';
 import Navigation from './Navigation';
+import Footer from './Footer';
+
+
 
 
 const Earphones = ({ onAddToCart }) => {
@@ -53,6 +55,13 @@ const Earphones = ({ onAddToCart }) => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
+  };
+
+  // Get the appropriate image based on screen size
+  const getProductImage = (product) => {
+    if (isMobile) return product.categoryImage.mobile;
+    if (isTablet) return product.categoryImage.tablet;
+    return product.categoryImage.desktop;
   };
 
   const getStyles = () => {
@@ -119,29 +128,13 @@ const Earphones = ({ onAddToCart }) => {
         position: 'relative',
         aspectRatio: '1',
         backgroundColor: '#f8fafc',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)'
+        overflow: 'hidden'
       },
-      productImageContent: {
-        textAlign: 'center',
-        color: '#94a3b8'
-      },
-      productImageIcon: {
-        width: '6rem',
-        height: '6rem',
-        margin: '0 auto 0.75rem',
-        backgroundColor: '#cbd5e1',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '2rem'
-      },
-      productImageText: {
-        fontSize: '0.875rem',
-        fontWeight: '500'
+      productImg: {
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'center'
       },
       badge: {
         position: 'absolute',
@@ -149,7 +142,8 @@ const Earphones = ({ onAddToCart }) => {
         padding: '0.25rem 0.75rem',
         borderRadius: '1rem',
         fontSize: '0.75rem',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        zIndex: 10
       },
       newBadge: {
         left: '1rem',
@@ -264,36 +258,6 @@ const Earphones = ({ onAddToCart }) => {
       },
       emptyStateText: {
         color: '#64748b'
-      },
-      footer: {
-        backgroundColor: '#0f172a',
-        color: '#ffffff',
-        padding: '3rem 0'
-      },
-      footerContent: {
-        maxWidth: '1280px',
-        margin: '0 auto',
-        padding: isMobile ? '0 1rem' : isTablet ? '0 1.5rem' : '0 2rem',
-        textAlign: 'center'
-      },
-      footerTitle: {
-        fontSize: isMobile ? '1.5rem' : '2rem',
-        fontWeight: 'bold',
-        marginBottom: '1rem'
-      },
-      footerText: {
-        color: '#cbd5e1',
-        marginBottom: '1.5rem'
-      },
-      footerButton: {
-        backgroundColor: '#fb923c',
-        color: '#ffffff',
-        fontWeight: '500',
-        padding: '0.75rem 2rem',
-        borderRadius: '0.5rem',
-        border: 'none',
-        cursor: 'pointer',
-        transition: 'background-color 0.2s ease'
       }
     };
 
@@ -358,157 +322,156 @@ const Earphones = ({ onAddToCart }) => {
   };
 
   return (
-     <>
-     <Navigation />
+    <>
+      <Navigation />
+  
     <div style={styles.container}>
-      {/* Header */}
-      <div style={styles.header}>
-        <div style={styles.headerContent}>
-          <div style={styles.headerText}>
-            <h1 style={styles.title}>
-              Premium Earphones
-            </h1>
-            <p style={styles.subtitle}>Experience wireless freedom with crystal-clear sound</p>
-            <div style={styles.categoryBadge}>
-              <span>🎧</span>
-              <span>Earphones Collection</span>
+        {/* Header */}
+        <div style={styles.header}>
+          <div style={styles.headerContent}>
+            <div style={styles.headerText}>
+              <h1 style={styles.title}>
+                Premium Earphones
+              </h1>
+              <p style={styles.subtitle}>Experience wireless freedom with crystal-clear sound</p>
+              <div style={styles.categoryBadge}>
+                <span>🎧</span>
+                <span>Earphones Collection</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Products Grid */}
-      <div style={styles.productsSection}>
-        <div style={styles.productsGrid}>
-          {earphones.map((product) => (
-            <div 
-              key={product.id} 
-              style={styles.productCard}
-              onMouseEnter={(e) => handleCardHover(e, true)}
-              onMouseLeave={(e) => handleCardHover(e, false)}
-            >
-              {/* Product Image */}
-              <div style={styles.productImage}>
-                <div style={styles.productImageContent}>
-                  <div style={styles.productImageIcon}>
-                    {/* <span>🎧</span> */}
+        {/* Products Grid */}
+        <div style={styles.productsSection}>
+          <div style={styles.productsGrid}>
+            {earphones.map((product) => (
+              <div 
+                key={product.id} 
+                style={styles.productCard}
+                onMouseEnter={(e) => handleCardHover(e, true)}
+                onMouseLeave={(e) => handleCardHover(e, false)}
+              >
+                {/* Product Image */}
+                <div style={styles.productImage}>
+                  <img 
+                    src={getProductImage(product)}
+                    alt={product.name}
+                    style={styles.productImg}
+                    onError={(e) => {
+                      // Fallback if image fails to load
+                      e.target.style.display = 'none';
+                      e.target.parentNode.style.background = 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)';
+                      e.target.parentNode.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #94a3b8;">
+                          <div style="width: 6rem; height: 6rem; background-color: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 0.75rem;">
+                            🎧
+                          </div>
+                          <p style="font-size: 0.875rem; font-weight: 500;">${product.name}</p>
+                        </div>
+                      `;
+                    }}
+                  />
+                  
+                  {/* New Badge */}
+                  {product.new && (
+                    <div style={{...styles.badge, ...styles.newBadge}}>
+                      NEW
+                    </div>
+                  )}
+
+                  {/* Category Badge */}
+                  <div style={{...styles.badge, ...styles.categoryBadgeCard}}>
+                    {product.category}
                   </div>
-                  <p style={styles.productImageText}>{product.name}</p>
                 </div>
-                
-                {/* New Badge */}
-                {product.new && (
-                  <div style={{...styles.badge, ...styles.newBadge}}>
-                    NEW
-                  </div>
-                )}
 
-                {/* Category Badge */}
-                <div style={{...styles.badge, ...styles.categoryBadgeCard}}>
-                  {product.category}
+                {/* Product Info */}
+                <div style={styles.productInfo}>
+                  <div>
+                    <h3 
+                      style={styles.productName}
+                      data-product-name
+                    >
+                      {product.name}
+                    </h3>
+                    <p style={styles.productDescription}>
+                      {product.description}
+                    </p>
+                  </div>
+
+                  {/* Price and Rating */}
+                  <div style={styles.priceRating}>
+                    <div style={styles.price}>
+                      {formatPrice(product.price)}
+                    </div>
+                    <div style={styles.rating}>
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={16}
+                          style={{
+                            color: i < 4 ? '#fbbf24' : '#cbd5e1',
+                            fill: i < 4 ? '#fbbf24' : 'none'
+                          }}
+                        />
+                      ))}
+                      <span style={styles.ratingText}>(4.5)</span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div style={styles.actionButtons}>
+                    <button 
+                      style={{
+                        ...styles.addToCartButton,
+                        ...(addedProducts[product.id] ? styles.addedButton : {})
+                      }}
+                      onClick={() => handleAddToCart(product)}
+                      onMouseEnter={(e) => {
+                        if (!addedProducts[product.id]) {
+                          handleButtonHover(e, true, 'cart');
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!addedProducts[product.id]) {
+                          handleButtonHover(e, false, 'cart');
+                        }
+                      }}
+                    >
+                      <ShoppingCart size={18} />
+                      <span>{addedProducts[product.id] ? 'Added!' : 'Add to Cart'}</span>
+                    </button>
+                    <button 
+                      style={styles.viewButton}
+                      onMouseEnter={(e) => handleButtonHover(e, true, 'view')}
+                      onMouseLeave={(e) => handleButtonHover(e, false, 'view')}
+                    >
+                      <ArrowRight size={18} />
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              {/* Product Info */}
-              <div style={styles.productInfo}>
-                <div>
-                  <h3 
-                    style={styles.productName}
-                    data-product-name
-                  >
-                    {product.name}
-                  </h3>
-                  <p style={styles.productDescription}>
-                    {product.description}
-                  </p>
-                </div>
-
-                {/* Price and Rating */}
-                <div style={styles.priceRating}>
-                  <div style={styles.price}>
-                    {formatPrice(product.price)}
-                  </div>
-                  <div style={styles.rating}>
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={16}
-                        style={{
-                          color: i < 4 ? '#fbbf24' : '#cbd5e1',
-                          fill: i < 4 ? '#fbbf24' : 'none'
-                        }}
-                      />
-                    ))}
-                    <span style={styles.ratingText}>(4.5)</span>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div style={styles.actionButtons}>
-                  <button 
-                    style={{
-                      ...styles.addToCartButton,
-                      ...(addedProducts[product.id] ? styles.addedButton : {})
-                    }}
-                    onClick={() => handleAddToCart(product)}
-                    onMouseEnter={(e) => {
-                      if (!addedProducts[product.id]) {
-                        handleButtonHover(e, true, 'cart');
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!addedProducts[product.id]) {
-                        handleButtonHover(e, false, 'cart');
-                      }
-                    }}
-                  >
-                    <ShoppingCart size={18} />
-                    <span>{addedProducts[product.id] ? 'Added!' : 'Add to Cart'}</span>
-                  </button>
-                  <button 
-                    style={styles.viewButton}
-                    onMouseEnter={(e) => handleButtonHover(e, true, 'view')}
-                    onMouseLeave={(e) => handleButtonHover(e, false, 'view')}
-                  >
-                    <ArrowRight size={18} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Empty State */}
-        {earphones.length === 0 && (
-          <div style={styles.emptyState}>
-            <div style={styles.emptyStateIcon}>
-              <span>🎧</span>
-            </div>
-            <h3 style={styles.emptyStateTitle}>No earphones available</h3>
-            <p style={styles.emptyStateText}>Check back soon for new arrivals</p>
+            ))}
           </div>
-        )}
-      </div>
 
-      {/* Footer */}
-      <div style={styles.footer}>
-        <div style={styles.footerContent}>
-          <h3 style={styles.footerTitle}>Upgrade Your Audio Experience</h3>
-          <p style={styles.footerText}>Discover the perfect balance of comfort, style, and premium sound quality</p>
-          <button 
-            style={styles.footerButton}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#ea580c'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#fb923c'}
-          >
-            Explore All Audio
-          </button>
+          {/* Empty State */}
+          {earphones.length === 0 && (
+            <div style={styles.emptyState}>
+              <div style={styles.emptyStateIcon}>
+                <span>🎧</span>
+              </div>
+              <h3 style={styles.emptyStateTitle}>No earphones available</h3>
+              <p style={styles.emptyStateText}>Check back soon for new arrivals</p>
+            </div>
+          )}
         </div>
+
+        
+
+        <Footer />
       </div>
-    </div>
-    <Footer />
-   
-    </>
-    
+        </>
   );
 };
 

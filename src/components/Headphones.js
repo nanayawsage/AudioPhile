@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Star, ArrowRight, } from 'lucide-react';
-import Footer from "./Footer"
+import Footer from './Footer';
 import Navigation from './Navigation';
+
+
 
 const Headphones = ({ onAddToCart }) => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
@@ -90,6 +92,16 @@ const Headphones = ({ onAddToCart }) => {
     }).format(price);
   };
 
+  const getImageSrc = (product) => {
+    if (isMobile) {
+      return product.categoryImage.mobile;
+    } else if (isTablet) {
+      return product.categoryImage.tablet;
+    } else {
+      return product.categoryImage.desktop;
+    }
+  };
+
   const getStyles = () => {
     const baseStyles = {
       container: {
@@ -163,29 +175,13 @@ const Headphones = ({ onAddToCart }) => {
         position: 'relative',
         aspectRatio: '1',
         backgroundColor: '#f8fafc',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)'
+        overflow: 'hidden'
       },
-      productImageContent: {
-        textAlign: 'center',
-        color: '#94a3b8'
-      },
-      productImageIcon: {
-        width: '6rem',
-        height: '6rem',
-        margin: '0 auto 0.75rem',
-        backgroundColor: '#cbd5e1',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '1.5rem'
-      },
-      productImageText: {
-        fontSize: '0.875rem',
-        fontWeight: '500'
+      productImg: {
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'center'
       },
       badge: {
         position: 'absolute',
@@ -193,7 +189,8 @@ const Headphones = ({ onAddToCart }) => {
         padding: '0.25rem 0.75rem',
         borderRadius: '1rem',
         fontSize: '0.75rem',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        zIndex: 10
       },
       newBadge: {
         left: '1rem',
@@ -202,8 +199,9 @@ const Headphones = ({ onAddToCart }) => {
       },
       priceBadge: {
         right: '1rem',
-        backgroundColor: '#0f172a',
-        color: '#ffffff'
+        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        color: '#ffffff',
+        backdropFilter: 'blur(4px)'
       },
       productInfo: {
         padding: isMobile ? '1.25rem' : '1.5rem'
@@ -425,12 +423,28 @@ const Headphones = ({ onAddToCart }) => {
             >
               {/* Product Image */}
               <div style={styles.productImage}>
-                <div style={styles.productImageContent}>
-                  <div style={styles.productImageIcon}>
-                    <span>🎧</span>
-                  </div>
-                  <p style={styles.productImageText}>{product.name}</p>
-                </div>
+                <img 
+                  src={getImageSrc(product)} 
+                  alt={product.name}
+                  style={styles.productImg}
+                  onError={(e) => {
+                    // Fallback if image fails to load
+                    e.target.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.style.cssText = `
+                      width: 100%;
+                      height: 100%;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+                      color: #94a3b8;
+                      font-size: 3rem;
+                    `;
+                    fallback.textContent = '🎧';
+                    e.target.parentNode.appendChild(fallback);
+                  }}
+                />
                 
                 {/* New Badge */}
                 {product.new && (
@@ -529,8 +543,9 @@ const Headphones = ({ onAddToCart }) => {
           </button>
         </div>
       </div>
-      <Footer />
+     
     </div>
+     <Footer />
      </>
   );
 };
