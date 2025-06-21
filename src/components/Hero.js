@@ -1,267 +1,252 @@
 import React from 'react';
-import heroImg from '../assets/home/desktop/image-hero.jpg';
 
-const Hero = () => {
+
+const Hero = ({ heroImage, altText = "Hero Image" }) => {
   const styles = {
-    heroSection: {
-      backgroundColor: '#1a1a1a',
-      color: 'white',
-      minHeight: '100vh',
-      position: 'relative',
-      overflow: 'hidden'
-    },
-    backgroundPattern: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      opacity: 0.1,
-      background: 'linear-gradient(135deg, #374151 0%, #1f2937 100%)'
-    },
-    container: {
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '64px 24px',
-      position: 'relative',
-      zIndex: 10
-    },
-    gridContainer: {
-      display: 'grid',
-      gridTemplateColumns: '1fr',
-      gap: '48px',
+    hero: {
+      backgroundColor: '#000000',
+      minHeight: '60vh',
+      display: 'flex',
       alignItems: 'center',
-      minHeight: '80vh'
+      justifyContent: 'space-between',
+      padding: '2rem',
+      position: 'relative',
+      overflow: 'hidden',
+      borderTop: '0.5px solid rgba(255, 255, 255, 0.2)',
     },
-    contentSection: {
-      textAlign: 'center',
-      order: 1
+    
+    content: {
+      flex: '1',
+      maxWidth: '500px',
+      color: '#ffffff',
+      zIndex: 10,
     },
-    newProductLabel: {
-      color: '#fb923c',
-      fontSize: '12px',
-      fontWeight: 'normal',
-      letterSpacing: '6px',
+    
+    newProduct: {
+      color: '#D87D4A',
+      fontSize: '0.875rem',
+      fontWeight: '500',
+      letterSpacing: '0.5em',
+      marginBottom: '1rem',
+      opacity: 0.7,
       textTransform: 'uppercase',
-      opacity: 0.6,
-      marginBottom: '32px'
     },
-    mainHeading: {
-      fontSize: '2.5rem',
+    
+    title: {
+      fontSize: '3.5rem',
       fontWeight: 'bold',
-      lineHeight: 1,
-      letterSpacing: '0.05em',
-      marginBottom: '32px'
+      lineHeight: '1.1',
+      marginBottom: '1.5rem',
+      textTransform: 'uppercase',
     },
+    
     description: {
-      color: '#d1d5db',
-      fontSize: '14px',
-      lineHeight: 1.6,
-      maxWidth: '384px',
-      margin: '0 auto 32px auto',
-      opacity: 0.75
+      color: '#9CA3AF',
+      fontSize: '1.125rem',
+      lineHeight: '1.6',
+      marginBottom: '2.5rem',
+      maxWidth: '400px',
     },
-    buttonContainer: {
-      paddingTop: '16px'
-    },
-    ctaButton: {
-      backgroundColor: '#ea580c',
-      color: 'white',
-      fontWeight: 'bold',
-      fontSize: '12px',
-      letterSpacing: '2px',
-      textTransform: 'uppercase',
-      padding: '16px 32px',
+    
+    button: {
+      backgroundColor: '#D87D4A',
+      color: '#ffffff',
+      padding: '1rem 2rem',
       border: 'none',
+      fontSize: '0.875rem',
+      fontWeight: 'bold',
+      letterSpacing: '0.1em',
+      textTransform: 'uppercase',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
-      ':hover': {
-        backgroundColor: '#dc2626',
-        boxShadow: '0 10px 25px rgba(0,0,0,0.3)'
-      }
     },
-    imageSection: {
+    
+    buttonHover: {
+      backgroundColor: '#B86A3A',
+      transform: 'scale(1.05)',
+    },
+    
+    imageContainer: {
+      flex: '1',
       display: 'flex',
       justifyContent: 'center',
-      order: 2
+      alignItems: 'center',
+      position: 'relative',
+      maxWidth: '500px',
+      height: '300px',
     },
-    imageContainer: {
-      position: 'relative'
-    }
+    
+    heroImageStyle: {
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      position: 'relative',
+      zIndex: 2,
+    },
+    
+    imagePlaceholder: {
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      border: '2px dashed rgba(255, 255, 255, 0.3)',
+      borderRadius: '8px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'rgba(255, 255, 255, 0.5)',
+      fontSize: '1rem',
+      textAlign: 'center',
+      position: 'relative',
+      zIndex: 2,
+    },
+    
+    glowEffect: {
+      position: 'absolute',
+      width: '320px',
+      height: '320px',
+      borderRadius: '50%',
+      background: 'radial-gradient(circle, rgba(75, 85, 104, 0.2) 0%, transparent 70%)',
+      filter: 'blur(30px)',
+      zIndex: 1,
+    },
+    
+    decorativePattern: {
+      position: 'absolute',
+      top: '2rem',
+      right: '2rem',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: '0.5rem',
+      opacity: 0.2,
+      zIndex: 1,
+    },
+    
+    dot: {
+      width: '12px',
+      height: '12px',
+      backgroundColor: '#D87D4A',
+      borderRadius: '50%',
+    },
   };
 
-  // Handle button hover
-  const handleButtonHover = (e) => {
-    e.target.style.backgroundColor = '#dc2626';
-    e.target.style.boxShadow = '0 10px 25px rgba(0,0,0,0.3)';
-  };
-
-  const handleButtonLeave = (e) => {
-    e.target.style.backgroundColor = '#ea580c';
-    e.target.style.boxShadow = 'none';
-  };
+  const [isHovered, setIsHovered] = React.useState(false);
 
   return (
-    <section style={styles.heroSection}>
-      {/* Background pattern/texture */}
-      <div style={styles.backgroundPattern}></div>
-      
-      <div style={styles.container}>
-        <div style={styles.gridContainer} className="responsive-grid">
-          {/* Left Side - Content */}
-          <div style={styles.contentSection} className="responsive-content">
-            <p style={styles.newProductLabel}>
-              NEW PRODUCT
-            </p>
-            
-            <h1 style={styles.mainHeading} className="responsive-heading">
-              XX99 MARK II<br />
-              HEADPHONES
-            </h1>
-            
-            <p style={styles.description} className="responsive-description">
-              Experience natural, lifelike audio and exceptional<br className="hidden-mobile" />
-              build quality made for the passionate music<br className="hidden-mobile" />
-              enthusiast.
-            </p>
-            
-            <div style={styles.buttonContainer}>
-              <button 
-                style={styles.ctaButton}
-                className="responsive-button"
-                onMouseEnter={handleButtonHover}
-                onMouseLeave={handleButtonLeave}
-              >
-                SEE PRODUCT
-              </button>
-            </div>
-          </div>
-
-          {/* Right Side - Product Image */}
-          <div style={styles.imageSection} className="responsive-image">
-            <div style={styles.imageContainer}>
-              <img 
-                src={heroImg}
-                alt="XX99 Mark II Headphones" 
-                className="hero-image"
-              />
-            </div>
-          </div>
-        </div>
+    <div style={styles.hero} className="hero-container">
+      {/* Content Section */}
+      <div style={styles.content} className="content-section">
+        <p style={styles.newProduct}>New Product</p>
+        <h1 style={styles.title} className="hero-title">
+          XX99 Mark II<br />
+          Headphones
+        </h1>
+        <p style={styles.description} className="hero-description">
+          Experience natural, lifelike audio and exceptional build quality made for the passionate music enthusiast.
+        </p>
+        <button
+          style={{
+            ...styles.button,
+            ...(isHovered ? styles.buttonHover : {}),
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          See Product
+        </button>
       </div>
-      
+
+      {/* Hero Image Section */}
+      <div style={styles.imageContainer} className="image-container">
+        <div style={styles.glowEffect} className="glow-effect"></div>
+        {heroImage ? (
+          <img 
+            src={heroImage} 
+            alt={altText}
+            style={styles.heroImageStyle}
+          />
+        ) : (
+          <div style={styles.imagePlaceholder}>
+            <div>
+              <p>Import your hero image here</p>
+              <p style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                Pass heroImage prop to display your image
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+
+      {/* Decorative Pattern */}
+      <div style={styles.decorativePattern} className="decorative-pattern">
+        {[...Array(9)].map((_, i) => (
+          <div key={i} style={styles.dot} className="pattern-dot"></div>
+        ))}
+      </div>
+
+      {/* Responsive styles */}
       <style jsx>{`
-        .responsive-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 48px;
-          align-items: center;
-          min-height: 80vh;
-        }
-        
-        .responsive-content {
-          text-align: center;
-          order: 1;
-        }
-        
-        .responsive-image {
-          display: flex;
-          justify-content: center;
-          order: 2;
-        }
-        
-        .hidden-mobile {
-          display: none;
-        }
-        
-        .hero-image {
-          width: 288px;
-          height: 288px;
-          object-fit: contain;
-        }
-        
-        .responsive-heading {
-          font-size: 2.5rem;
-        }
-        
-        .responsive-description {
-          font-size: 14px;
-        }
-        
-        .responsive-button {
-          font-size: 12px;
-        }
-        
-        /* Tablet styles */
-        @media (min-width: 768px) {
-          .responsive-heading {
-            font-size: 3rem;
+        @media (max-width: 1024px) {
+          .hero-container {
+            flex-direction: column !important;
+            text-align: center !important;
+            padding: 2rem !important;
+            min-height: 50vh !important;
           }
           
-          .responsive-description {
-            font-size: 16px;
+          .content-section {
+            margin-bottom: 2rem !important;
           }
           
-          .responsive-button {
-            font-size: 14px;
+          .hero-title {
+            font-size: 2.5rem !important;
           }
           
-          .hero-image {
-            width: 384px;
-            height: 384px;
+          .image-container {
+            height: 250px !important;
+          }
+          
+          .glow-effect {
+            width: 270px !important;
+            height: 270px !important;
           }
         }
         
-        /* Desktop styles - Image on right */
-        @media (min-width: 1024px) {
-          .responsive-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
+        @media (max-width: 768px) {
+          .hero-container {
+            padding: 1.5rem 1rem !important;
+            min-height: 45vh !important;
           }
           
-          .responsive-content {
-            text-align: left;
-            order: 1; /* Content stays on left */
+          .hero-title {
+            font-size: 2rem !important;
           }
           
-          .responsive-image {
-            justify-content: flex-end;
-            order: 2; /* Image goes to right */
+          .hero-description {
+            font-size: 1rem !important;
           }
           
-          .responsive-heading {
-            font-size: 3.75rem;
+          .image-container {
+            height: 200px !important;
           }
           
-          .responsive-description {
-            font-size: 18px;
-            margin: 0 0 32px 0;
+          .glow-effect {
+            width: 220px !important;
+            height: 220px !important;
           }
           
-          .hidden-mobile {
-            display: inline;
+          .decorative-pattern {
+            top: 1rem !important;
+            right: 1rem !important;
           }
           
-          .hero-image {
-            width: 450px;
-            height: 450px;
-          }
-        }
-        
-        /* Large desktop */
-        @media (min-width: 1280px) {
-          .responsive-heading {
-            font-size: 4.5rem;
-          }
-          
-          .hero-image {
-            width: 500px;
-            height: 500px;
+          .pattern-dot {
+            width: 8px !important;
+            height: 8px !important;
           }
         }
       `}</style>
-    </section>
+    </div>
   );
 };
 

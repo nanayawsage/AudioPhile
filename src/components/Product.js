@@ -25,9 +25,9 @@ const Product = ({ onAddToCart }) => {
       "slug": "yx1-earphones",
       "name": "YX1 Wireless Earphones",
       "image": {
-        "mobile": "./assets/product-yx1-earphones/mobile/image-product.jpg",
-        "tablet": "./assets/product-yx1-earphones/tablet/image-product.jpg",
-        "desktop": "./assets/product-yx1-earphones/desktop/image-product.jpg"
+        "mobile": "./assets/home/mobile/image-earphones-yx1.jpg",
+        "tablet": "./assets/home/tablet/image-earphones-yx1.jpg",
+        "desktop": "./assets/home/desktop/image-earphones-yx1.jpg"
       },
       "category": "earphones",
       "categoryImage": {
@@ -658,7 +658,7 @@ const Product = ({ onAddToCart }) => {
             onMouseEnter={(e) => e.target.style.backgroundColor = '#ea580c'}
             onMouseLeave={(e) => e.target.style.backgroundColor = '#fb923c'}
           >
-            Shop All Products
+            Explore More Product
           </button>
         </div>
       </div>

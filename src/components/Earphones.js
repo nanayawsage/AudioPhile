@@ -3,6 +3,7 @@ import { ShoppingCart, Star, ArrowRight } from 'lucide-react';
 import Footer from './Footer';
 import Navigation from './Navigation';
 
+
 const Earphones = ({ onAddToCart }) => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const [addedProducts, setAddedProducts] = useState({});
@@ -26,15 +27,15 @@ const Earphones = ({ onAddToCart }) => {
       "slug": "yx1-earphones",
       "name": "YX1 Wireless Earphones",
       "image": {
-        "mobile": "./assets/product-yx1-earphones/mobile/image-product.jpg",
-        "tablet": "./assets/product-yx1-earphones/tablet/image-product.jpg",
-        "desktop": "./assets/product-yx1-earphones/desktop/image-product.jpg"
+        "mobile": "/assets/product-yx1-earphones/mobile/image-product.jpg",
+        "tablet": "/assets/product-yx1-earphones/tablet/image-product.jpg",
+        "desktop": "/assets/product-yx1-earphones/desktop/image-product.jpg"
       },
       "category": "earphones",
       "categoryImage": {
-        "mobile": "./assets/product-yx1-earphones/mobile/image-category-page-preview.jpg",
-        "tablet": "./assets/product-yx1-earphones/tablet/image-category-page-preview.jpg",
-        "desktop": "./assets/product-yx1-earphones/desktop/image-category-page-preview.jpg"
+        "mobile": "/assets/product-yx1-earphones/mobile/image-category-page-preview.jpg",
+        "tablet": "/assets/product-yx1-earphones/tablet/image-category-page-preview.jpg",
+        "desktop": "/assets/product-yx1-earphones/desktop/image-category-page-preview.jpg"
       },
       "new": true,
       "price": 599,
@@ -390,7 +391,7 @@ const Earphones = ({ onAddToCart }) => {
               <div style={styles.productImage}>
                 <div style={styles.productImageContent}>
                   <div style={styles.productImageIcon}>
-                    <span>🎧</span>
+                    {/* <span>🎧</span> */}
                   </div>
                   <p style={styles.productImageText}>{product.name}</p>
                 </div>
