@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Star, ArrowRight } from 'lucide-react';
 
-const Product = () => {
+const Product = ({ onAddToCart }) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const [addedProducts, setAddedProducts] = useState({});
 
   useEffect(() => {
     const handleResize = () => {
@@ -323,12 +324,17 @@ const Product = () => {
         borderRadius: '0.5rem',
         border: 'none',
         cursor: 'pointer',
-        transition: 'background-color 0.2s ease',
+        transition: 'all 0.2s ease',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         gap: '0.5rem',
-        fontSize: '0.875rem'
+        fontSize: '0.875rem',
+        position: 'relative'
+      },
+      addedButton: {
+        backgroundColor: '#16a34a',
+        color: '#ffffff'
       },
       viewButton: {
         backgroundColor: '#f1f5f9',
@@ -458,6 +464,39 @@ const Product = () => {
     }
   };
 
+  const handleAddToCart = (product) => {
+    // Add visual feedback
+    setAddedProducts(prev => ({
+      ...prev,
+      [product.id]: true
+    }));
+
+    // Remove feedback after 2 seconds
+    setTimeout(() => {
+      setAddedProducts(prev => ({
+        ...prev,
+        [product.id]: false
+      }));
+    }, 2000);
+
+    // Call parent callback if provided
+    if (onAddToCart) {
+      onAddToCart(product);
+    }
+
+    // Store in localStorage as backup
+    const existingCart = JSON.parse(localStorage.getItem('audioCart') || '[]');
+    const existingItem = existingCart.find(item => item.id === product.id);
+    
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      existingCart.push({ ...product, quantity: 1 });
+    }
+    
+    localStorage.setItem('audioCart', JSON.stringify(existingCart));
+  };
+
   return (
     <div style={styles.container}>
       {/* Header */}
@@ -565,12 +604,24 @@ const Product = () => {
                 {/* Action Buttons */}
                 <div style={styles.actionButtons}>
                   <button 
-                    style={styles.addToCartButton}
-                    onMouseEnter={(e) => handleButtonHover(e, true, 'cart')}
-                    onMouseLeave={(e) => handleButtonHover(e, false, 'cart')}
+                    style={{
+                      ...styles.addToCartButton,
+                      ...(addedProducts[product.id] ? styles.addedButton : {})
+                    }}
+                    onClick={() => handleAddToCart(product)}
+                    onMouseEnter={(e) => {
+                      if (!addedProducts[product.id]) {
+                        handleButtonHover(e, true, 'cart');
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!addedProducts[product.id]) {
+                        handleButtonHover(e, false, 'cart');
+                      }
+                    }}
                   >
                     <ShoppingCart size={18} />
-                    <span>Add to Cart</span>
+                    <span>{addedProducts[product.id] ? 'Added!' : 'Add to Cart'}</span>
                   </button>
                   <button 
                     style={styles.viewButton}
