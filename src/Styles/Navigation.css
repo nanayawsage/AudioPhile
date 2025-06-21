@@ -1,0 +1,259 @@
+/* Navigation Styles */
+.navigation {
+  background-color: #000000;
+  color: white;
+  position: relative;
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.nav-container.tablet {
+  padding: 0 1.5rem;
+}
+
+.nav-container.desktop {
+  padding: 0 2rem;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem;
+}
+
+.nav-content.tablet {
+  height: 4.5rem;
+}
+
+.nav-content.desktop {
+  height: 5rem;
+}
+
+.mobile-menu-button {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-menu-button.hidden {
+  display: none;
+}
+
+.menu-toggle {
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.menu-toggle:hover {
+  color: #fb923c;
+  background-color: rgba(251, 146, 60, 0.1);
+}
+
+.logo-container {
+  flex-shrink: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logo-container.desktop {
+  position: static;
+  left: auto;
+  transform: none;
+}
+
+.logo {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: font-size 0.2s ease;
+}
+
+.logo.tablet {
+  font-size: 1.375rem;
+}
+
+.logo.desktop {
+  font-size: 1.5rem;
+}
+
+.desktop-nav {
+  display: none;
+}
+
+.desktop-nav.visible {
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+}
+
+.nav-links.desktop {
+  gap: 3rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+}
+
+.nav-link.tablet {
+  font-size: 0.9375rem;
+}
+
+.nav-link.desktop {
+  font-size: 1rem;
+}
+
+.nav-link:hover {
+  color: #fb923c;
+  background-color: rgba(251, 146, 60, 0.1);
+}
+
+.cart-container {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.cart-button,
+.cart-button:link,
+.cart-button:visited,
+.cart-button:active {
+  color: white !important;
+  background-color: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+.cart-button:hover {
+  color: #fb923c !important;
+  background-color: rgba(251, 146, 60, 0.1) !important;
+  background: rgba(251, 146, 60, 0.1) !important;
+}
+
+.cart-button:focus {
+  outline: 2px solid #fb923c;
+  outline-offset: 2px;
+  color: white !important;
+  background-color: transparent !important;
+}
+
+/* Additional reset for any child elements */
+.cart-button * {
+  color: inherit !important;
+  background: transparent !important;
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.mobile-menu-overlay.visible {
+  display: block;
+}
+
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #000000;
+  border-top: 1px solid #374151;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+}
+
+.mobile-menu.visible {
+  display: block;
+}
+
+.mobile-nav-links {
+  padding: 1rem 0;
+}
+
+.mobile-nav-link {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  border-bottom: 1px solid #1f2937;
+}
+
+.mobile-nav-link:hover {
+  color: #fb923c;
+  background-color: rgba(251, 146, 60, 0.1);
+}
+
+.mobile-nav-link:last-child {
+  border-bottom: none;
+}
+
+/* Media queries for better responsive design */
+@media (min-width: 768px) {
+  .mobile-menu-button {
+    display: none;
+  }
+  
+  .logo-container {
+    position: static;
+    left: auto;
+    transform: none;
+  }
+  
+  .desktop-nav {
+    display: block;
+  }
+  
+  .mobile-menu-overlay,
+  .mobile-menu {
+    display: none !important;
+  }
+}
