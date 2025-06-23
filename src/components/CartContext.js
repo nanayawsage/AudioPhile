@@ -19,14 +19,32 @@ export const CartProvider = ({ children }) => {
 
   // Add item to cart
   const addToCart = (product) => {
-    const existingItem = cartItems.find((item) => item.id === product.id);
+    // Determine the appropriate image based on screen size
+    const getProductImage = () => {
+      const width = typeof window !== "undefined" ? window.innerWidth : 1024;
+      if (width < 768) {
+        return product.categoryImage?.mobile || product.image?.mobile;
+      } else if (width < 1024) {
+        return product.categoryImage?.tablet || product.image?.tablet;
+      } else {
+        return product.categoryImage?.desktop || product.image?.desktop;
+      }
+    };
+
+    // Create a cart-ready product with the correct image
+    const cartProduct = {
+      ...product,
+      image: getProductImage()
+    };
+
+    const existingItem = cartItems.find((item) => item.id === cartProduct.id);
     if (existingItem) {
-      updateCartItem(product.id, {
+      updateCartItem(cartProduct.id, {
         ...existingItem,
         quantity: existingItem.quantity + 1,
       });
     } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+      setCartItems([...cartItems, { ...cartProduct, quantity: 1 }]);
     }
   };
 

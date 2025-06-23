@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Star, ArrowRight } from "lucide-react";
-import Footer from "./Footer";
+import { useCart } from "./CartContext";
 import { getEarphonesStyles } from "./EarphonesStyles";
 
-const Earphones = ({ onAddToCart }) => {
+const Earphones = () => {
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
   const [addedProducts, setAddedProducts] = useState({});
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const handleResize = () => {
@@ -122,15 +124,12 @@ const Earphones = ({ onAddToCart }) => {
       }));
     }, 2000);
 
-    // Call parent callback if provided
-    if (onAddToCart) {
-      onAddToCart(product);
-    }
+    // Add to cart using context
+    addToCart(product);
   };
 
   return (
     <>
-
       <div style={styles.container}>
         <div style={styles.header}>
           <div style={styles.headerContent}>
@@ -275,7 +274,6 @@ const Earphones = ({ onAddToCart }) => {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 };

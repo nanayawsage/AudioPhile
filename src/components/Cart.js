@@ -24,7 +24,7 @@ const Cart = () => {
     // Payment Details
     eMoneyNumber: '',
     eMoneyPin: '',
-    paymentMethod: 'e-money' // 'e-money' or 'cash'
+    paymentMethod: 'e-money' 
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -288,7 +288,6 @@ const Cart = () => {
 
   return (
     <div style={pageStyles.container}>
-      {/* Page Header */}
       <div style={pageStyles.header}>
         <button
           style={pageStyles.backButton}
@@ -780,7 +779,7 @@ const Cart = () => {
                               checked={checkoutData.paymentMethod === 'e-money'}
                               onChange={(e) => handleInputChange('paymentMethod', e.target.value)}
                             />
-                            <span style={{ fontSize: '0.875rem', color: '#374151' }}>e-Money</span>
+                            <span style={{ fontSize: '0.875rem', color: '#374151' }}>Mobile Money</span>
                           </label>
                           <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
                             <input
@@ -798,7 +797,7 @@ const Cart = () => {
                       {checkoutData.paymentMethod === 'e-money' && (
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                           <div style={inputStyles.container}>
-                            <label style={inputStyles.label}>e-Money Number *</label>
+                            <label style={inputStyles.label}>MoMo Number *</label>
                             <input
                               type="text"
                               value={checkoutData.eMoneyNumber}
@@ -814,7 +813,7 @@ const Cart = () => {
                           </div>
 
                           <div style={inputStyles.container}>
-                            <label style={inputStyles.label}>e-Money PIN *</label>
+                            <label style={inputStyles.label}>MoMo PIN *</label>
                             <input
                               type="password"
                               value={checkoutData.eMoneyPin}
@@ -1164,5 +1163,4 @@ const Cart = () => {
   );
 };
 
-// Add removeCartItem to CartContext if not present
 export default Cart;

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Star, ArrowRight, Volume2 } from "lucide-react";
+import { useCart } from "./CartContext";
 
-const Speakers = ({ onAddToCart }) => {
+const Speakers = () => {
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
   const [addedProducts, setAddedProducts] = useState({});
   const [imageErrors, setImageErrors] = useState({});
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const handleResize = () => {
@@ -229,8 +232,6 @@ const Speakers = ({ onAddToCart }) => {
         color: "#94a3b8",
       },
       productImageIcon: {
-        width: "8rem",
-        height: "8rem",
         margin: "0 auto 1rem",
         backgroundColor: "#cbd5e1",
         borderRadius: "50%",
@@ -437,10 +438,8 @@ const Speakers = ({ onAddToCart }) => {
       }));
     }, 2000);
 
-    // Call parent callback if provided
-    if (onAddToCart) {
-      onAddToCart(product);
-    }
+    // Add to cart using context
+    addToCart(product);
   };
 
   // Calculate stats
