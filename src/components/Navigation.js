@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, ShoppingCart } from "lucide-react";
-// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "./CartContext";
 import "../Styles/Navigation.css";
 
 const Navigation = () => {
@@ -8,6 +9,9 @@ const Navigation = () => {
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
+  
+  const { getTotalItems } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,6 +31,10 @@ const Navigation = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleCartClick = () => {
+    navigate('/Cart');
   };
 
   const isMobile = windowWidth < 768;
@@ -60,6 +68,8 @@ const Navigation = () => {
     }
   }, [isMobile, isMobileMenuOpen]);
 
+  const totalItems = getTotalItems();
+
   return (
     <>
       {/* Mobile menu overlay */}
@@ -70,7 +80,11 @@ const Navigation = () => {
         onClick={() => setIsMobileMenuOpen(false)}
       />
 
-      <nav className="navigation">
+      <nav className="navigation" style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000
+      }}>
         <div className={getResponsiveClass("nav-container")}>
           <div className={getResponsiveClass("nav-content")}>
             {/* Mobile menu button */}
@@ -89,22 +103,22 @@ const Navigation = () => {
 
             {/* Logo */}
             <div className={getResponsiveClass("logo-container")}>
-              <a href="/" className={getResponsiveClass("logo")}>
+              <Link to="/" className={getResponsiveClass("logo")}>
                 audiophile
-              </a>
+              </Link>
             </div>
 
             {/* Desktop navigation */}
             <div className={`desktop-nav ${isMobile ? "" : "visible"}`}>
               <div className={getResponsiveClass("nav-links")}>
                 {navLinks.map((link) => (
-                  <a
+                  <Link
                     key={link.label}
-                    href={link.href}
+                    to={link.href}
                     className={getResponsiveClass("nav-link")}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -114,9 +128,31 @@ const Navigation = () => {
               <button
                 className="cart-button"
                 aria-label="Shopping cart"
-                onClick={() => window.location.href = '/Cart'}
+                onClick={handleCartClick}
+                style={{ position: 'relative' }}
               >
                 <ShoppingCart size={isMobile ? 20 : isDesktop ? 24 : 22} />
+                {totalItems > 0 && (
+                  <span 
+                    style={{
+                      position: 'absolute',
+                      top: '-8px',
+                      right: '-8px',
+                      backgroundColor: '#fb923c',
+                      color: 'white',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    {totalItems}
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -129,14 +165,14 @@ const Navigation = () => {
           >
             <div className="mobile-nav-links">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.label}
-                  href={link.href}
+                  to={link.href}
                   className="mobile-nav-link"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>

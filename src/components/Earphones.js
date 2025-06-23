@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Star, ArrowRight } from "lucide-react";
-import Navigation from "./Navigation";
 import Footer from "./Footer";
 import { getEarphonesStyles } from "./EarphonesStyles";
 
@@ -131,7 +130,6 @@ const Earphones = ({ onAddToCart }) => {
 
   return (
     <>
-      <Navigation />
 
       <div style={styles.container}>
         <div style={styles.header}>

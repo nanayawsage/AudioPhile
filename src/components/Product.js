@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Star, ArrowRight } from "lucide-react";
+import { useCart } from "./CartContext";
 
 // Separated styles module
 const useProductStyles = (isMobile, isTablet, isDesktop) => {
@@ -336,12 +337,14 @@ const useProductInteractions = () => {
   };
 };
 
-const Product = ({ onAddToCart }) => {
+const Product = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
   const [addedProducts, setAddedProducts] = useState({});
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const handleResize = () => {
@@ -537,13 +540,8 @@ const Product = ({ onAddToCart }) => {
       }));
     }, 2000);
 
-    // Call parent callback if provided
-    if (onAddToCart) {
-      onAddToCart(product);
-    }
-
-    // Store cart data in memory (no localStorage in Claude artifacts)
-    console.log("Product added to cart:", product);
+    // Add to cart using context
+    addToCart(product);
   };
 
   return (

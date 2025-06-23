@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Star, ArrowRight, Volume2 } from "lucide-react";
-import Navigation from "./Navigation";
-import Footer from "./Footer";
 
 const Speakers = ({ onAddToCart }) => {
   const [windowWidth, setWindowWidth] = useState(
@@ -453,7 +451,6 @@ const Speakers = ({ onAddToCart }) => {
 
   return (
     <>
-      <Navigation />
       <div style={styles.container}>
         {/* Header */}
         <div style={styles.header}>
@@ -632,7 +629,6 @@ const Speakers = ({ onAddToCart }) => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
