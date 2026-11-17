@@ -7,7 +7,7 @@ import Headphones from './components/Headphones';
 import Speakers from './components/Speakers';
 import Earphones from './components/Earphones';
 import Cart from './components/Cart';
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Route path="/Earphones" element={<Earphones />} />
         <Route path="/Cart" element={<Cart />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </CartProvider>
   );
 }
